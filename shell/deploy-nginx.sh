@@ -84,10 +84,10 @@ check_use_env_config() {
 
 # 如果NGINX容器不存在或者处于非运行状态，执行初始化操作
 if [ "$(get_container_status)" != "true" ]; then
-  mkdir -p "$NGINX_LOG_DIR"
-  mkdir -p "$NGINX_STATIC_DIR"
-  mkdir -p "$NGINX_CNF_DIR"
-  mkdir -p "$NGINX_CERT_DIR"
+  mkdir -p "$ENV_NGINX_LOG_DIR"
+  mkdir -p "$ENV_NGINX_STATIC_DIR"
+  mkdir -p "$ENV_NGINX_CNF_DIR"
+  mkdir -p "$ENV_NGINX_CERT_DIR"
 
   echo "NGINX容器不存在或者处于非运行状态，执行初始化操作"
   echo "====================  删除旧镜像 ===================="
