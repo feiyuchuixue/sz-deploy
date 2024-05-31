@@ -77,8 +77,13 @@ check_use_env_config() {
     # 如果使用环境变量配置文件
   if [ "$USE_ENV_CONFIG" = "true" ]; then
     mkdir -p "${CONFIG_DIR}"
+    mkdir -p "${ENV_NGINX_CNF_DIR}"
     echo "========== 替换环境变量配置文件 =========="
-    cp -rf "${CONFIG_DIR}"/* "${ENV_NGINX_CNF_DIR}"
+    if [ -n "$(ls -A "${CONFIG_DIR}")" ]; then
+      cp -rf "${CONFIG_DIR}"/* "${ENV_NGINX_CNF_DIR}"
+    else
+      echo "${CONFIG_DIR} 目录为空，跳过复制操作"
+    fi
   fi
 }
 
