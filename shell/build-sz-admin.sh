@@ -67,9 +67,12 @@ main() {
   cd "$DEPLOY_DIR"
   echo "DEPLOY_DIR == $DEPLOY_DIR"
   ls -l
+  mkdir -p "$ENV_NGINX_STATIC_DIR/$PROJECT_NAME"
   rm -rf "$ENV_NGINX_STATIC_DIR/$PROJECT_NAME"          # 删除之前的静态资源路径
-  cp -rr "./dist" "$ENV_NGINX_STATIC_DIR/$PROJECT_NAME" # 复制静态资源到nginx路径下
-  find "./nginx" -type f -name "*.conf" -exec cp -f {} "$ENV_NGINX_CNF_DIR" \;
+  cp -rf "./dist" "$ENV_NGINX_STATIC_DIR/$PROJECT_NAME" # 复制静态资源到nginx路径下
+
+  mkdir -p "$ENV_NGINX_CNF_DIR"
+  find "./nginx" -type f -name "*.conf" -exec cp -f {} "$ENV_NGINX_CNF_DIR"/ \;
 
   echo "========== 清理 =========="
   # 删除源代码文件
