@@ -6,7 +6,7 @@ source ./common.sh
 set -e # 如果命令失败，则立即退出
 
 BRANCH_NAME="main" #分支名
-PROJECT_NAME="sz-boot-parent"
+PROJECT_NAME="sz-service-admin"
 PORT=9991                # 服务端口
 PROFILE_ACTIVE="preview" # java -jar -Dspring.profiles.active=dev java部署环境
 # 根磁盘路径
