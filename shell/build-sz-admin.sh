@@ -22,6 +22,9 @@ APP_PACKAGE_JSON_PATH="${APP_TMP_PATH}/${DEPLOY_VERSION}"                       
 PUBLIC_NODE_MODULES_REPOSITORY="${ENV_PUBLIC_NODE_MODULES_REPOSITORY}/${PROJECT_NAME}" # 挂载node_modules地址
 DEPLOY_DIR="${ENV_ROOT_DIR}/${ENV_APP_DIR}/${PROJECT_NAME}/${DEPLOY_VERSION}"          # 部署文件备份地址
 
+USE_ENV_CONFIG="true"
+CONFIG_DIR="${ENV_ROOT_DIR}/${ENV_CONF_DIR}/${PROJECT_NAME}" # 环境变量配置文件目录
+
 # 主执行函数
 main() {
   local start_time=$(date +%s)
@@ -38,6 +41,18 @@ main() {
   fi
   git clone -b "$BRANCH_NAME" "$PROJECT_REPO" "$DEPLOY_VERSION"
   cd "$DEPLOY_VERSION" || exit
+
+    # 如果使用环境变量配置文件
+  if [ "$USE_ENV_CONFIG" = "true" ]; then
+    mkdir -p "${CONFIG_DIR}"
+    echo "========== 替换环境变量配置文件 =========="
+    if [ -n "$(ls -A "${CONFIG_DIR}")" ]; then
+      cp -rf "${CONFIG_DIR}/.env.production" "${APP_PACKAGE_JSON_PATH}"
+    else
+      echo "${CONFIG_DIR} 目录为空，跳过复制操作"
+    fi
+  fi
+
   mkdir -p "$DEPLOY_DIR"
   mv ./nginx "$DEPLOY_DIR"
 
