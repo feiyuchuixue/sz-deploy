@@ -12,8 +12,8 @@ ROOT_PWD="密码"                  # minio 密码
 DATA_DIR="/mnt/minio/data"     # minio文件存储磁盘
 CONFIG_DIR="/mnt/minio/config" # minio配置路径
 
-WEB_PORT="9000"                                # minio控制台
-SERVER_PORT="9001"                             # minio API
+WEB_PORT="9000"                                # minio API
+SERVER_PORT="9001"                             # minio控制台
 MINIO_DOMAIN="https://your.domain.com"         # minio API域名
 MINIO_DOMAIN_BROWSER="https://your.domain.com" # minio 域名
 
@@ -54,8 +54,8 @@ docker run -d \
   -v "$DATA_DIR":/data \
   -v "$CONFIG_DIR":/root/.minio \
   minio/minio server \
-  --console-address ":$WEB_PORT" \
-  --address ":$SERVER_PORT" /data
+  --console-address ":$SERVER_PORT" \
+  --address ":$WEB_PORT" /data
 
 echo "========== 加入minio网络 =========="
 # 检查Docker网络
