@@ -2,13 +2,15 @@
 
 set -e # 如果命令失败，则立即退出
 
-PROJECT_NAME="energy-api"
+PROJECT_NAME="sz-service-admin"
 PORT=9991                # 服务端口
 PROFILE_ACTIVE="prod" # java -jar -Dspring.profiles.active=dev java部署环境
 
 ENV_ROOT_DIR="/home"
 ENV_APP_DIR="app"
+ENV_CONF_DIR="conf"
 LOG_DIR="${ENV_ROOT_DIR}/${ENV_APP_DIR}/${PROJECT_NAME}/logs"
+CONFIG_DIR="${ENV_ROOT_DIR}/${ENV_CONF_DIR}/${PROJECT_NAME}" # 环境变量配置文件目录
 
 ACR_URL=registry.cn-beijing.aliyuncs.com
 IMAGE_URL="$ACR_URL/你的命名空间/${PROJECT_NAME}"
@@ -45,6 +47,7 @@ main() {
     --restart always \
     -p "$PORT":"$PORT" \
     -v "$LOG_DIR":/logs \
+    -v "$CONFIG_DIR":/config \
     -e "SPRING_PROFILES_ACTIVE=$PROFILE_ACTIVE" \
     "$IMAGE_URL:$VERSION"
 

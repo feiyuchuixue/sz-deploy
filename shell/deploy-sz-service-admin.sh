@@ -25,7 +25,8 @@ GIT_PATH_SSH="feiyuchuixue/sz-boot-parent.git"                                  
 PROJECT_REPO="${ENV_GIT_PROTOCOL}://${ENV_GIT_USERNAME}:${ENV_GIT_PASSWORD}@${ENV_GIT_HOST}/${GIT_PATH}" # git clone 地址
 PROJECT_REPO_SSH="git@${ENV_GIT_HOST_SSH}:$GIT_PATH_SSH"
 
-USE_ENV_CONFIG=true                                          # 是否使用环境变量配置文件
+# ！！！docker 将config目录做了映射，必须手动指定宿主机的配置文件路径
+#USE_ENV_CONFIG=true                                          # 是否使用环境变量配置文件
 CONFIG_DIR="${ENV_ROOT_DIR}/${ENV_CONF_DIR}/${PROJECT_NAME}" # 环境变量配置文件目录
 main() {
   local start_time=$(date +%s)
@@ -43,15 +44,15 @@ main() {
   cd "$APP_POM_PATH" || exit
 
   # 如果使用环境变量配置文件
-  if [ "$USE_ENV_CONFIG" = "true" ]; then
-    mkdir -p "${CONFIG_DIR}"
-    echo "========== 替换环境变量配置文件 =========="
-    if [ -n "$(ls -A "${CONFIG_DIR}")" ]; then
-      cp -rf "${CONFIG_DIR}"/* "${APP_CONFIG_PATH}"
-    else
-      echo "${CONFIG_DIR} 目录为空，跳过复制操作"
-    fi
-  fi
+#  if [ "$USE_ENV_CONFIG" = "true" ]; then
+#    mkdir -p "${CONFIG_DIR}"
+#    echo "========== 替换环境变量配置文件 =========="
+#    if [ -n "$(ls -A "${CONFIG_DIR}")" ]; then
+#      cp -rf "${CONFIG_DIR}"/* "${APP_CONFIG_PATH}"
+#    else
+#      echo "${CONFIG_DIR} 目录为空，跳过复制操作"
+#    fi
+#  fi
 
   mkdir -p "${DEPLOY_DIR}"
   # 移动Dockerfile到部署目录
@@ -90,6 +91,7 @@ main() {
     --restart always \
     -p "$PORT":"$PORT" \
     -v "$LOG_DIR":/logs \
+    -v "$CONFIG_DIR":/config \
     -e "SPRING_PROFILES_ACTIVE=$PROFILE_ACTIVE" \
     "$PROJECT_NAME"
   # 检查Docker网络
